@@ -1,0 +1,128 @@
+﻿@model BH.CodeGen.Model.Settings
+@using BH.CodeGen
+
+@{
+    var fullTableName = string.Format("[dbo].[{0}]", Model.ClassName);
+    var fullSpName = string.Format("[dbo].[Save{0}]", Model.ClassName);
+    WriteLiteral(
+    $"--region PROCEDURE {fullSpName}\n" +
+    $"IF OBJECT_ID('{fullSpName}') IS NOT NULL \n" +
+    $"    BEGIN \n" +
+    $"        DROP PROC {fullSpName} \n" +
+    $"    END \n" +
+    $"GO \n" +
+    $"     \n" +
+    $"CREATE PROC {fullSpName} \n" +
+    $"( \n");
+    int count = 1;
+    int propsLength = Model.Properties.Count;
+    foreach (var prop in Model.Properties)
+    {
+        if (!prop.Name.Equals("CreatedBy") && !prop.Name.Equals("CreatedDate")
+                                           && !prop.Name.Equals("ModifiedDate"))
+        {
+            if (prop.Name.Equals("ModifiedBy"))
+                WriteLiteral($"\t@{prop.Name} {(Converter.DataTypeStringFromColumn(prop))} \n");
+            else if(propsLength == count)
+                WriteLiteral($"\t@{prop.Name} {(Converter.DataTypeStringFromColumn(prop))} \n");
+            else
+                WriteLiteral($"\t@{prop.Name} {(Converter.DataTypeStringFromColumn(prop))}, \n");
+            count++;
+        }
+        
+    }
+    WriteLiteral(")\nAS\n");
+
+    foreach (var prop in Model.Properties)
+    {
+        if (!prop.Name.Equals("CreatedBy") && !prop.Name.Equals("CreatedDate")
+                                           && !prop.Name.Equals("ModifiedDate"))
+        {
+            if(!prop.Type.Equals("string"))
+                WriteLiteral($"DECLARE @Local{prop.Name} {(Converter.DataTypeStringFromColumn(prop))} = @{prop.Name};\n");
+            else
+                WriteLiteral($"DECLARE @Local{prop.Name} {(Converter.DataTypeStringFromColumn(prop))} = LTRIM(RTRIM(@{prop.Name}));\n");
+        }
+    }
+
+    count = 1;
+    WriteLiteral($"\nIF @LocalId IS NULL OR @LocalId = 0\nBEGIN\n\tINSERT INTO {fullTableName}\n\t(");
+    foreach (var prop in Model.Properties)
+    {
+        if (prop.Name.Equals("Id") || prop.Name.Equals("ID"))
+        {
+            count++;
+            continue;
+        }
+
+        if (count == propsLength)
+            WriteLiteral($"[{prop.Name}])\n");
+        else
+            WriteLiteral($"[{prop.Name}], ");
+       
+        count++;
+    }
+    WriteLiteral("\tSELECT ");
+
+    count = 1;
+    foreach(var prop in Model.Properties)
+    {
+        if(prop.Name.Equals("Id") || prop.Name.Equals("ID"))
+        {
+            count++;
+            continue;
+        }
+        if (prop.Name.Equals("CreatedBy"))  
+        {
+            WriteLiteral("@LocalModifiedBy, ");
+        }
+        else if (prop.Name.Equals("CreatedDate"))  
+        {
+            WriteLiteral("GETDATE(), ");
+        }
+        else if (prop.Name.Equals("ModifiedBy"))
+        {
+            WriteLiteral("NULL, ");
+        }
+        else if (prop.Name.Equals("ModifiedDate"))
+        {
+            WriteLiteral("NULL\n");
+        }
+        else
+        {
+            WriteLiteral($"@Local{prop.Name}, ");
+        }
+        count++;
+    }
+    WriteLiteral($"\tSET @LocalId = SCOPE_IDENTITY()\nEND\nELSE\nBEGIN\n\tUPDATE {fullTableName}\n\tSET\n\t\t");
+    count = 1;
+    foreach (var prop in Model.Properties)
+    {
+        if (prop.Name.Equals("Id") || prop.Name.Equals("ID"))
+        {
+            count++;
+            continue;
+        }
+
+        if (!prop.Name.Equals("CreatedBy") && !prop.Name.Equals("CreatedDate"))
+        {
+            if (prop.Name.Equals("ModifiedDate"))
+            {
+                WriteLiteral($"[{prop.Name}] = GETDATE()\n\t\tWHERE [Id] = @LocalId\n");
+            }
+            else if (count == propsLength)
+            {
+                WriteLiteral($"[{prop.Name}] = @Local{prop.Name}\n\t\tWHERE [Id] = @LocalId\n");
+            }
+            else
+            {
+                WriteLiteral($"[{prop.Name}] = @Local{prop.Name}, ");
+            }
+                
+        }
+        
+        count++;
+    }
+    WriteLiteral("END\nSELECT @LocalId\nGO\n--endregion\n");
+}
+

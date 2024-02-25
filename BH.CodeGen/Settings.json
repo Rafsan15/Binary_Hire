@@ -1,0 +1,54 @@
+﻿{
+  "ClassName": "EmailTemplate",
+  "RepoName": "EmailTemplateRepo",
+  "ServiceName": "EmailTemplateService",
+  "Properties": [
+    {
+      "Name": "Id",
+      "Type": "int",
+      "Length": "-1"
+    },
+    {
+      "Name": "EmailTypeId",
+      "Type": "int",
+      "Length": "-1"
+    },
+    {
+      "Name": "Subject",
+      "Type": "string",
+      "Length": "200"
+    },
+    {
+      "Name": "Body",
+      "Type": "string",
+      "Length": "-1"
+    },
+    {
+      "Name": "OrganizationId",
+      "Type": "int",
+      "Length": "-1"
+    },
+    {
+      "Name": "CreatedBy",
+      "Type": "int",
+      "Length": "-1"
+    },
+    {
+      "Name": "CreatedDate",
+      "Type": "datetime",
+      "Length": "-1"
+    },
+    {
+      "Name": "ModifiedBy",
+      "Type": "int",
+      "Length": "-1"
+    },
+    {
+      "Name": "ModifiedDate",
+      "Type": "datetime",
+      "Length": "-1"
+    }
+  ],
+  "ResultModel": "EmailTemplateModel"
+}
+

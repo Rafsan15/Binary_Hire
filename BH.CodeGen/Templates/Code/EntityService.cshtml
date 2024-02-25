@@ -1,0 +1,55 @@
+﻿@model BH.CodeGen.Model.Settings
+using BH.Models;
+using BH.Models.ViewModels;
+using BH.Repositories;
+using BH.Repositories.Interface;
+using BH.Services.Interface;
+using Microsoft.Extensions.Logging;
+
+namespace BH.Services
+{
+    public class @Model.ServiceName : I@(Model.ServiceName)
+    {
+        private readonly ILogger<@(Model.RepoName)> _logger;
+        private readonly I@(Model.RepoName) _repo;
+        public @(Model.ServiceName)(ILogger<@(Model.RepoName)> logger, I@(Model.RepoName) repo)
+        {
+            _logger = logger;
+            _repo = repo;
+        }
+
+        public async Task<ResultModel<@(Model.ClassName)ResponseModel>> Save@(Model.ClassName)(@(Model.ClassName)RequestModel model)
+        {
+            _logger.LogInformation("Going to execute Method: Save@(Model.ClassName), Class: @Model.ServiceName");
+            var result = await _repo.Save@(Model.ClassName)(model);
+            _logger.LogInformation("Execution completed Method: Save@(Model.ClassName), Class: @Model.ServiceName");
+            return await Get@(Model.ClassName)ById(result);
+        }
+
+        public async Task<ResultModel<@(Model.ClassName)ResponseModel>> Get@(Model.ClassName)ById(int id)
+        {
+            _logger.LogInformation("Going to execute Method: Get@(Model.ClassName)ById, Class: @Model.ServiceName");
+            var result = await _repo.Get@(Model.ClassName)ById(id);
+            _logger.LogInformation("Execution completed Method: Get@(Model.ClassName)ById, Class: @Model.ServiceName");
+            return result;
+        }
+
+        public async Task<ResultModel<List<@(Model.ClassName)ResponseModel>>> GetAll@(Model.ClassName)(@(Model.ClassName)ListModel model)
+        {
+            _logger.LogInformation("Going to execute Method: GetAll@(Model.ClassName), Class: @Model.ServiceName");
+            var result = await _repo.GetAll@(Model.ClassName)(model);
+            _logger.LogInformation("Execution completed Method: GetAll@(Model.ClassName), Class: @Model.ServiceName");
+            return result;
+        }
+
+        public async Task<ResultModel<int>> GetAll@(Model.ClassName)Count(@(Model.ClassName)ListModel model)
+        {
+            _logger.LogInformation("Going to execute Method: GetAll@(Model.ClassName)Count, Class: @Model.ServiceName");
+            var result = await _repo.GetAll@(Model.ClassName)Count(model);
+            _logger.LogInformation("Execution completed Method: GetAll@(Model.ClassName)Count, Class: @Model.ServiceName");
+            return result;
+        }
+    }
+}
+
+

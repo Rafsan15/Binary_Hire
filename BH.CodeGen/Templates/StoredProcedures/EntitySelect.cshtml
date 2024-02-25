@@ -1,0 +1,54 @@
+﻿@model BH.CodeGen.Model.Settings
+@using BH.CodeGen
+@{
+    var fullTableName = string.Format("[dbo].[{0}]", Model.ClassName);
+    var fullSpName = string.Format("[dbo].[Select{0}]", Model.ClassName);
+    WriteLiteral(
+    $"--region PROCEDURE {fullSpName}\n" +
+    $"IF OBJECT_ID('{fullSpName}') IS NOT NULL \n" +
+    $"    BEGIN \n" +
+    $"        DROP PROC {fullSpName} \n" +
+    $"    END \n" +
+    $"GO \n" +
+    $"     \n" +
+    $"CREATE PROC {fullSpName} \n" +
+    $"( \n");
+    WriteLiteral(
+        $"\t@Page INT = 1,\n"+
+        $"\t@PageSize INT = 10,\n"+
+        $"\t@OrganizationId INT,\n"+
+        $"\t@IsCountCalled BIT = 0,\n"+
+        $"\t@SqlWhereClause NVARCHAR(500) = NULL\n"+
+        $")\nAS\n"+
+        $"BEGIN\n"+
+        $"\tSET NOCOUNT ON\n"+
+        $"\tSET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\n\n"+
+        $"\tDECLARE @FirstRec INT, @LastRec INT\n"+
+        $"\tSELECT @FirstRec = (@Page - 1) * @PageSize\n"+
+        $"\tSELECT @LastRec = (@Page * @PageSize + 1)\n\n"+
+        $"\t-- local parameters to overcome parameter sniffing issue\n"+
+        $"\tDECLARE\n"+
+        $"\t\t@LocalSearch NVARCHAR(500) = ISNULL(LTRIM(RTRIM(@SqlWhereClause)), ''),\n"+
+        $"\t\t@sqlRestltQuery NVARCHAR(500) = '',\n"+
+        $"\t\t@Query NVARCHAR(MAX) = '',\n"+
+        $"\t\t@ParmDefinition NVARCHAR(MAX);\n\n"+
+        $"\tIF @IsCountCalled = 1\n"+
+        $"\tBEGIN\n"+
+        $"\t\tSET @sqlRestltQuery = N' SELECT count(RowNum) AS RecordCount FROM TempResult  ';\n"+
+        $"\tEND\n"+
+        $"\tELSE\n"+
+        $"\tBEGIN\n"+
+        $"\t\tSET @sqlRestltQuery = N' SELECT top (@LastRec-1) [tr].[RowNum],tr.* FROM TempResult AS [tr] WHERE [RowNum] > @FirstRec AND [RowNum] < @LastRec ' ;\n"+
+        $"\tEND\n\n"+
+        $"\tSET @Query = N'\n"+
+        $"\t\t\t\tSELECT ROW_NUMBER() OVER(ORDER BY [Id]) as [RowNum], * FROM (\n"+
+        $"\t\t\t\tSELECT * FROM {fullTableName} WHERE OrganizationId=@OrganizationId';\n\n"+
+        $"\tSET @ParmDefinition = '@FirstRec int, @LastRec int, @OrganizationId int';\n\n"+
+        $"\tSET @Query ='BEGIN WITH TempResult as('+ @Query + ')  AS list WHERE 1=1' + CASE WHEN @LocalSearch <> '' THEN ' AND ' + @LocalSearch ELSE '' END  +'  ) ' + @sqlRestltQuery +' END';\n\n" +
+        $"\t--PRINT(@Query);\n\n"+
+        $"\tEXEC sp_executesql @Query, @ParmDefinition, @FirstRec=@FirstRec, @LastRec= @LastRec, @OrganizationId=@OrganizationId;\n\n"+
+        $"\tSET NOCOUNT OFF"+
+        $"\tEND\nGO\n--endregion\n"
+    );
+}
+
