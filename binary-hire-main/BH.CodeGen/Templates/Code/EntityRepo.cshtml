@@ -1,0 +1,165 @@
+﻿@model BH.CodeGen.Model.Settings
+
+@using System.Linq
+@using System.Collections
+@using System.Collections.Generic
+@using System.Text
+@using BH.CodeGen
+using System;
+using Dapper;
+using BH.Models;
+using BH.Models.ViewModels;
+using BH.Repositories.Connections;
+using BH.Repositories.Connections.Interface;
+using BH.Repositories.Interface;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using System.Data;
+
+
+namespace BH.Repositories
+{
+    public class @Model.RepoName :BHConnectionBase, I@(Model.RepoName)
+    {
+        private readonly ILogger<@(Model.RepoName)> _logger;
+        public @(Model.RepoName)(IDbConnectionFactory dbConnectionFactory, ILogger<@(Model.RepoName)> logger)
+            :base(dbConnectionFactory)
+        {
+            _logger = logger;
+        }
+
+        public async Task<int> Save@(Model.ClassName)(@(Model.ClassName)RequestModel model)
+        {
+            _logger.LogInformation("Going to execute Method: Save@(Model.ClassName), Class: @Model.RepoName");
+
+            try
+            {
+                var param = new DynamicParameters();
+                @foreach (var column in Model.Properties)
+                    {
+                        if (!column.Name.Equals("CreatedBy") && !column.Name.Equals("CreatedDate")
+                                                             && !column.Name.Equals("ModifiedDate"))
+                        {
+                            var line1 = string.Format("\t\t\t    param.Add(\"@{0}\", model.{0}, DbType.{1}, ParameterDirection.Input, null);\n",
+                                column.Name, Converter.EnumStringFromValue(Converter.GetDbTypeFromSqlType(column.Type)));
+                            WriteLiteral(line1);
+                        }
+                    }
+
+                return await Connection
+                    .ExecuteScalarAsync<int>("Save@(Model.ClassName)", param, commandType: CommandType.StoredProcedure);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Exception occurred in Method: Save@(Model.ClassName), Class: @Model.RepoName, error :{ex.Message}");
+                return -1;
+            }
+        }
+
+        public async Task<ResultModel<@(Model.ClassName)ResponseModel>> Get@(Model.ClassName)ById(int id)
+        {
+            ResultModel<@(Model.ClassName)ResponseModel> resultModel = new ResultModel<@(Model.ClassName)ResponseModel>();
+            _logger.LogInformation("Going to execute Method: Save@(Model.ClassName), Class: @Model.RepoName");
+            try
+            {
+                var param = new DynamicParameters();
+
+                @{
+                    var line = string.Format("\t\t\t    param.Add(\"@Id\", id, DbType.Int32, ParameterDirection.Input, null);\n");
+                    WriteLiteral(line);
+                }
+
+                resultModel.Data = await Connection
+                    .QueryFirstOrDefaultAsync<@(Model.ClassName)ResponseModel>("Select@(Model.ClassName)ById", param, commandType: CommandType.StoredProcedure);
+                resultModel.Message = "Executed successfully";
+                resultModel.IsSuccess = true;
+                _logger.LogInformation("Execution completed Method: Get@(Model.ClassName)ById, Class: @Model.RepoName");
+                return resultModel;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Exception occurred in Method: Get@(Model.ClassName)ById, Class: @Model.RepoName, error :{ex.Message}");
+                resultModel.Data = null;
+                resultModel.Message = "Something went wrong";
+                resultModel.IsSuccess = false;
+                resultModel.ErrorMessages = ex.Message.Split(Environment.NewLine);
+                return resultModel;
+            }
+        }
+
+        public async Task<ResultModel<List<@(Model.ClassName)ResponseModel>>> GetAll@(Model.ClassName)(@(Model.ClassName)ListModel model)
+        {
+            ResultModel<List<@(Model.ClassName)ResponseModel>> resultModel = new ResultModel<List<@(Model.ClassName)ResponseModel>>();
+            _logger.LogInformation("Going to execute Method: GetAll@(Model.ClassName), Class: @Model.RepoName");
+            try
+            {
+                var param = new DynamicParameters();
+                @{
+                    var line2 = string.Format("\t\t\t    param.Add(\"@Page\", model.Page, DbType.Int32, ParameterDirection.Input, null);\n");
+                    line2 = line2 + string.Format("\t\t\t    param.Add(\"@PageSize\", model.PageSize, DbType.Int32, ParameterDirection.Input, null);\n");
+                    line2 = line2 + string.Format("\t\t\t    param.Add(\"@OrganizationId\", model.OrganizationId, DbType.Int32, ParameterDirection.Input, null);\n");
+                    WriteLiteral(line2);
+                }
+                var sqlWhereClause = model.GetSearchFilterClause();
+                @{
+                    var line3 = string.Format("\t\t\t    param.Add(\"@SqlWhereClause\", sqlWhereClause, DbType.String, ParameterDirection.Input, null);\n");
+                    WriteLiteral(line3);
+                }
+
+                resultModel.Data = (await Connection
+                    .QueryAsync<@(Model.ClassName)ResponseModel>("Select@(Model.ClassName)", param, commandType: CommandType.StoredProcedure)).ToList();
+                resultModel.Message = "Executed successfully";
+                resultModel.IsSuccess = true;
+                _logger.LogInformation("Execution completed Method: GetAll@(Model.ClassName), Class: @Model.RepoName");
+                return resultModel;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Exception occurred in Method: GetAll@(Model.ClassName), Class: @Model.RepoName, error :{ex.Message}");
+                resultModel.Data = null;
+                resultModel.Message = "Something went wrong";
+                resultModel.IsSuccess = false;
+                resultModel.ErrorMessages = ex.Message.Split(Environment.NewLine);
+                return resultModel;
+            }
+        }
+
+        public async Task<ResultModel<int>> GetAll@(Model.ClassName)Count(@(Model.ClassName)ListModel model)
+        {
+            ResultModel<int> resultModel = new ResultModel<int>();
+            _logger.LogInformation("Going to execute Method: GetAll@(Model.ClassName)Count, Class: @Model.RepoName");
+            try
+            {
+                var param = new DynamicParameters();
+                @{
+                    var line4 = string.Format("\t\t\t    param.Add(\"@IsCountCalled\", true, DbType.Boolean, ParameterDirection.Input, null);\n");
+                    line4 = line4 + string.Format("\t\t\t    param.Add(\"@OrganizationId\", model.OrganizationId, DbType.Int32, ParameterDirection.Input, null);\n");
+                    WriteLiteral(line4);
+                }
+                var sqlWhereClause = model.GetSearchFilterClause();
+                @{
+                    var line5 = string.Format("\t\t\t    param.Add(\"@SqlWhereClause\", sqlWhereClause, DbType.String, ParameterDirection.Input, null);\n");
+                    WriteLiteral(line5);
+                }
+
+                resultModel.Data = await Connection
+                    .QueryFirstAsync<int>("Select@(Model.ClassName)", param, commandType: CommandType.StoredProcedure);
+                resultModel.Message = "Executed successfully";
+                resultModel.IsSuccess = true;
+                _logger.LogInformation("Execution completed Method: GetAll@(Model.ClassName)Count, Class: @Model.RepoName");
+                return resultModel;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Exception occurred in Method: GetAll@(Model.ClassName)Count, Class: @Model.RepoName, error :{ex.Message}");
+                resultModel.Data = -1;
+                resultModel.Message = "Something went wrong";
+                resultModel.IsSuccess = false;
+                resultModel.ErrorMessages = ex.Message.Split(Environment.NewLine);
+                return resultModel;
+            }
+        }
+    }
+}
+
+

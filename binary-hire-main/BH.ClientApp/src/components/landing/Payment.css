@@ -1,0 +1,127 @@
+.payment-section {
+  min-height: 100dvh;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: 6vw;
+}
+.payment-section h1 {
+  font-size: 3.8rem;
+  padding: 5px;
+  margin: 20px 0px;
+  color: rgb(0, 0, 0);
+  font-weight: 600;
+  position: relative;
+}
+
+.payment-card h3 {
+  font-size: 1.8rem;
+  color: black;
+  font-weight: 900;
+  text-align: center;
+  margin-top: 1.8rem;
+  margin-bottom: 1.2rem;
+}
+
+.payment-card h4 {
+  font-size: 1.2rem;
+  color: rgb(30, 29, 29);
+  font-weight: bolder;
+  text-align: center;
+}
+.payment-card p {
+  width: 100%;
+  font-size: 1rem;
+  color: black;
+  text-align: center;
+  line-height: 1.5rem;
+  white-space: 1px;
+  margin-bottom: 20px;
+}
+.payment-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 130px;
+  z-index: 9;
+  margin-top: 7rem;
+}
+/* .payment-card {
+  height: 480px;
+  width: 340px;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding: 0 8%;
+  background: linear-gradient(
+    0deg,
+    rgba(110, 224, 225, 1) 25%,
+    rgba(114, 130, 219, 1) 65%
+  );
+  position: relative;
+  margin-top: 4dvh;
+  border-radius: 2rem;
+  align-items: center;
+} */
+.payment-card1 {
+  height: 500px;
+  width: 320px;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding: 0 8%;
+  /* background: linear-gradient(
+    0deg,
+    rgba(110, 224, 225, 1) 25%,
+    rgba(114, 130, 219, 1) 65%
+  );
+  position: relative; */
+  margin-top: 4dvh;
+  border-radius: 2rem;
+  align-items: center;
+  margin-bottom: 4rem;
+}
+@media (max-width: 1100px) {
+  .payment-section h1 {
+    /* font-size: 1.5rem; */
+    text-align: center;
+  }
+  .payment-cards {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .payment-card h3 {
+    font-size: 1.8rem;
+  }
+  /* .payment-card {
+    height: 380px;
+    width: 280px;
+    margin-left: 0;
+    margin: 20px;
+    background: linear-gradient(
+      0deg,
+      rgb(114, 121, 251) 35%,
+      rgba(114, 130, 219, 1) 65%
+    );
+  } */
+  .payment-card1 {
+    height: 360px;
+    width: 240px;
+    margin-left: -2rem;
+    margin-top: 0dvh;
+  }
+}
+@media (max-width: 900) {
+  .payment-card1 .payment-cards {
+    height: 360px;
+    width: 220px;
+    margin: 20px 0;
+  }
+
+  /* .payment-card1 {
+    height: 200px;
+    width: 100%;
+    margin-left: 0;
+    background-color: transparent;
+    margin-top: 0dvh; */
+}

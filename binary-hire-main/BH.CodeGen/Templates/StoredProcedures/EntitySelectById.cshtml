@@ -1,0 +1,30 @@
+﻿@model BH.CodeGen.Model.Settings
+@using BH.CodeGen
+@{
+    var fullTableName = string.Format("[dbo].[{0}]", Model.ClassName);
+    var fullSpName = string.Format("[dbo].[Select{0}ById]", Model.ClassName);
+    WriteLiteral(
+    $"--region PROCEDURE {fullSpName}\n" +
+    $"IF OBJECT_ID('{fullSpName}') IS NOT NULL \n" +
+    $"    BEGIN \n" +
+    $"        DROP PROC {fullSpName} \n" +
+    $"    END \n" +
+    $"GO \n" +
+    $"     \n" +
+    $"CREATE PROC {fullSpName} \n" +
+    $"( \n\t@Id INT\n)\nAS\n\tSELECT\n");
+
+    int count = 1;
+    int propsLength = Model.Properties.Count;
+    foreach (var prop in Model.Properties)
+    {
+        if (count == propsLength)
+            WriteLiteral($"\t[{prop.Name}]\n");
+        else
+            WriteLiteral($"\t[{prop.Name}],\n");
+        count++;
+    }
+    WriteLiteral($"\tFROM {fullTableName}\n\tWHERE Id=@Id\n");
+    WriteLiteral("GO\n--endregion\n");
+}
+

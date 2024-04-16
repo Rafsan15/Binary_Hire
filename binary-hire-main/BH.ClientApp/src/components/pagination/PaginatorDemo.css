@@ -1,0 +1,55 @@
+.paginator-demo .image-gallery {
+    text-align: center;
+    padding: 1rem;
+}
+
+.card {
+    margin-bottom: 2rem;
+}
+
+.custom-dropdown{ 
+    .p-dropdown-items {
+        display: flex !important;
+        flex-direction: column; /* Display items in a column */
+        gap: 8px; /* Add gap between items */
+      }
+      
+      /* Style for each dropdown item */
+      .p-dropdown-item {
+        padding: 8px; /* Add padding to each item for spacing */
+        transition: background-color 0.3s; /* Smooth transition for hover effect */
+        
+      }
+      
+      /* Hover effect for dropdown items */
+      .p-dropdown-item:hover {
+        background-color: #f0f0f0; /* Change background color on hover */
+      }
+      
+      
+      
+    
+    
+    
+    
+    }
+
+    .p-inputtext {
+        display: flex !important;
+        
+        align-items: center !important; 
+        
+        padding-left: 12px;
+        
+        
+      }
+
+      .p-dropdown {
+        background-color: transparent;
+        outline: none !important;
+      }
+
+      .p-dropdown:not(.p-focus) .p-dropdown-trigger {
+        border-color: transparent !important;
+        box-shadow: none !important;
+    }

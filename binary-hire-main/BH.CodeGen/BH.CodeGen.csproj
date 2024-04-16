@@ -1,0 +1,91 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Templates\" />
+    <None Remove="Templates\Code\" />
+    <None Remove="Templates\StoredProcedures\" />
+    <None Remove="Model\" />
+    <None Update="Templates\Code\EntityResponse.cshtml">
+      <Generator>RazorTemplatePreprocessor</Generator>
+      <LastGenOutput>Entity.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Templates\" />
+    <Folder Include="Templates\StoredProcedures\" />
+    <Folder Include="Model\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Templates\Code\Entity.cshtml">
+      <Generator>RazorTemplatePreprocessor</Generator>
+      <LastGenOutput>Entity.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Code\EntityRepo.cshtml">
+      <Generator>RazorTemplatePreprocessor</Generator>
+      <LastGenOutput>EntityRepo.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Code\IEntityRepo.cshtml">
+      <Generator>RazorTemplatePreprocessor</Generator>
+      <LastGenOutput>IEntityRepo.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Code\EntityService.cshtml">
+      <Generator>RazorTemplatePreprocessor</Generator>
+      <LastGenOutput>EntityService.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Code\IEntityService.cshtml">
+      <Generator>RazorTemplatePreprocessor</Generator>
+      <LastGenOutput>IEntityService.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\StoredProcedures\EntitySave.cshtml">
+      <Generator>RazorTemplatePreprocessor</Generator>
+      <LastGenOutput>EntitySave.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\StoredProcedures\EntitySelectById.cshtml">
+      <Generator>RazorTemplatePreprocessor</Generator>
+      <LastGenOutput>EntitySelectById.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\StoredProcedures\EntitySelect.cshtml">
+      <Generator>RazorTemplatePreprocessor</Generator>
+      <LastGenOutput>EntitySelect.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="RazorLight" Version="2.3.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Templates\Code\Entity.cs">
+      <DependentUpon>Entity.cshtml</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Code\EntityRepo.cs">
+      <DependentUpon>EntityRepo.cshtml</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Code\IEntityRepo.cs">
+      <DependentUpon>IEntityRepo.cshtml</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Code\EntityService.cs">
+      <DependentUpon>EntityService.cshtml</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Code\IEntityService.cs">
+      <DependentUpon>IEntityService.cshtml</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\StoredProcedures\EntitySave.cs">
+      <DependentUpon>EntitySave.cshtml</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\StoredProcedures\EntitySelectById.cs">
+      <DependentUpon>EntitySelectById.cshtml</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\StoredProcedures\EntitySelect.cs">
+      <DependentUpon>EntitySelect.cshtml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+</Project>

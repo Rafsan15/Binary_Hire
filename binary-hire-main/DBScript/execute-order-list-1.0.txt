@@ -1,0 +1,94 @@
+
+# Tables
+
+## ASPNetTables
+Tables/AspNetTables/AspNetUsers.sql
+Tables/AspNetTables/AspNetRoles.sql
+Tables/AspNetTables/AspNetUserLogins.sql
+Tables/AspNetTables/AspNetUserTokens.sql
+Tables/AspNetTables/AspNetUserRoles.sql
+Tables/AspNetTables/AspNetRoleClaims.sql
+Tables/AspNetTables/AspNetUserClaims.sql
+
+## BHTables
+Tables/BH/Setting.sql
+Tables/BH/User.sql
+Tables/BH/Organization.sql
+Tables/BH/WorkflowMaster.sql
+Tables/BH/WorkflowDetail.sql
+Tables/BH/JobPost.sql
+Tables/BH/Screening.sql
+Tables/BH/Result.sql
+Tables/BH/Schedule.sql
+Tables/BH/EmailTemplate.sql
+Tables/BH/Question.sql
+Tables/BH/Assessment.sql
+
+# Alter
+Alter/a_User.sql
+Alter/JobPost.sql
+Alter/Question.sql
+
+# Seed scripts
+SeedData/Setting.sql
+
+# StoredProcedures
+StoredProcedures/SaveUser.sql
+StoredProcedures/SelectUser.sql
+StoredProcedures/SelectUserById.sql
+StoredProcedures/IsUniqueUser.sql
+StoredProcedures/SelectUserByEmail.sql
+StoredProcedures/IsValidUser.sql
+StoredProcedures/SaveOrganization.sql
+StoredProcedures/SelectOrganization.sql
+StoredProcedures/SelectOrganizationById.sql
+StoredProcedures/SaveWorkflowMaster.sql
+StoredProcedures/SelectWorkflowMaster.sql
+StoredProcedures/SelectWorkflowMasterById.sql
+StoredProcedures/SelectWorkflowTypes.sql
+StoredProcedures/SelectRoleByUserId.sql
+StoredProcedures/SaveJobPost.sql
+StoredProcedures/SelectJobPost.sql
+StoredProcedures/SelectJobPostById.sql
+StoredProcedures/SelectJobTypes.sql
+StoredProcedures/SelectWorkplaces.sql
+StoredProcedures/SelectFavJobPost.sql
+StoredProcedures/UpdateJobFavourite.sql
+StoredProcedures/SaveScreening.sql
+StoredProcedures/SelectScreening.sql
+StoredProcedures/SelectScreeningById.sql
+StoredProcedures/SelectQueuedScreening.sql
+StoredProcedures/SaveResult.sql
+StoredProcedures/SaveListResult.sql
+StoredProcedures/SelectResult.sql
+StoredProcedures/SelectResultById.sql
+StoredProcedures/SelectScreeningByJobId.sql
+StoredProcedures/DeleteScreeningByJobId.sql
+StoredProcedures/SelectWorkflowByJob.sql
+StoredProcedures/SaveSchedule.sql
+StoredProcedures/SelectSchedule.sql
+StoredProcedures/SelectScheduleById.sql
+StoredProcedures/SaveEmailTemplate.sql
+StoredProcedures/SelectEmailTemplate.sql
+StoredProcedures/SelectEmailTemplateById.sql
+StoredProcedures/SelectEmailTemplateTypes.sql
+StoredProcedures/SelectWorkflowTypes.sql
+StoredProcedures/DeleteScheduleById.sql
+StoredProcedures/SaveQuestion.sql
+StoredProcedures/SelectQuestion.sql
+StoredProcedures/SelectQuestionById.sql
+StoredProcedures/SaveQuestionList.sql
+StoredProcedures/DeleteJobPost.sql
+StoredProcedures/SaveAssessment.sql
+StoredProcedures/SelectAssessment.sql
+StoredProcedures/SelectAssessmentById.sql
+StoredProcedures/SaveAssessmentList.sql
+StoredProcedures/IsAssessmentDone.sql
+StoredProcedures/SelectAssessmentSummery.sql
+StoredProcedures/SaveJobNotes.sql
+
+# Migration
+
+# Update statistics
+
+# Scheduler Job

@@ -1,0 +1,54 @@
+﻿{
+  "ClassName": "Assessment",
+  "RepoName": "AssessmentRepo",
+  "ServiceName": "AssessmentService",
+  "Properties": [
+    {
+      "Name": "Id",
+      "Type": "int",
+      "Length": "-1"
+    },
+    {
+      "Name": "ResultId",
+      "Type": "int",
+      "Length": "-1"
+    },
+    {
+      "Name": "QuestionId",
+      "Type": "int",
+      "Length": "-1"
+    },
+    {
+      "Name": "Score",
+      "Type": "int",
+      "Length": "-1"
+    },
+    {
+      "Name": "OrganizationId",
+      "Type": "int",
+      "Length": "-1"
+    },
+    {
+      "Name": "CreatedBy",
+      "Type": "int",
+      "Length": "-1"
+    },
+    {
+      "Name": "CreatedDate",
+      "Type": "datetime",
+      "Length": "-1"
+    },
+    {
+      "Name": "ModifiedBy",
+      "Type": "int",
+      "Length": "-1"
+    },
+    {
+      "Name": "ModifiedDate",
+      "Type": "datetime",
+      "Length": "-1"
+    }
+  ],
+  "ResultModel": "AssessmentModel"
+}
+

@@ -1,0 +1,58 @@
+﻿@using BH.CodeGen
+@model BH.CodeGen.Model.Settings
+using System;
+
+namespace BH.Models.ViewModels
+{
+    public class @(Model.ClassName)Model : OrganizationWiseModelBase
+    {
+    @foreach (var property in Model.Properties)
+    {
+        if (!property.Name.Equals("Id") && !property.Name.Equals("OrganizationId")
+                                        && !property.Name.Equals("CreatedBy")
+                                        && !property.Name.Equals("CreatedDate")
+                                        && !property.Name.Equals("ModifiedBy")
+                                        && !property.Name.Equals("ModifiedDate"))
+        {
+
+            var line = "\t\tpublic " + (Converter.DotNetTypeFromSqlDataType(@property.Type)) +
+                       " " + @property.Name + " { get; set;}\n";
+            WriteLiteral(line);
+        }
+    }
+    }
+    public class @(Model.ClassName)ListModel : PaginationModelBase
+    {
+    @foreach(var prop in Model.Properties)
+    {
+        if (prop.Name.Equals("OrganizationId"))
+        {
+            var line2 = "\t\tpublic " + (Converter.DotNetTypeFromSqlDataType(@prop.Type)) +
+                        " " + @prop.Name + " { get; set;}\n";
+            WriteLiteral(line2);
+        }
+
+        
+    }
+    }
+    
+    public class @(Model.ClassName)RequestModel : RequestOrganizationWiseModelBase
+    {
+    @foreach(var prop in Model.Properties)
+    {
+        if (!prop.Name.Equals("Id") && !prop.Name.Equals("OrganizationId")
+                                        && !prop.Name.Equals("CreatedBy")
+                                        && !prop.Name.Equals("CreatedDate")
+                                        && !prop.Name.Equals("ModifiedBy")
+                                        && !prop.Name.Equals("ModifiedDate"))
+        {
+            var line2 = "\t\tpublic " + (Converter.DotNetTypeFromSqlDataType(@prop.Type)) +
+                        " " + @prop.Name + " { get; set;}\n";
+            WriteLiteral(line2);
+        }
+
+        
+    }
+    }
+}
+
